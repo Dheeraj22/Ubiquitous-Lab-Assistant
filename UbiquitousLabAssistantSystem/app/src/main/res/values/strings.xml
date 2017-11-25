@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Ubiquitous Lab Assistant System</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_add_favourite">Add to Favourites</string>
+    <string name="action_play_next">Play Next</string>
+    <string name="backdrop_title">Appliances</string>
+    <string name="backdrop_subtitle">Choose device to control!</string>
+
+    <!-- Navigation Drawer Strings -->
+    <string name="drawer_item_home">Home</string>
+    <string name="drawer_item_settings">Settings</string>
+    <string name="drawer_item_login">Logout</string>
+    <string name="drawer_item_movies">Modes</string>
+    <string name="drawer_item_trailers">Scheduler</string>
+    <string name="drawer_item_theatres">Modes</string>
+    <string name="drawer_item_location">Configure Router</string>
+    <string name="drawer_item_about_us">About us</string>
+    <string name="drawer_item_contact_us">Contact us</string>
+    <string name="drawer_item_feedback">Feedback</string>
+    <string name="email_id">www.ula.com</string>
+
+    <string name="hint_url">URL</string>
+    <string name="hint_port">Port</string>
+    <string name="btn_connect">Connect</string>
+    <string name="err_url">Enter valid url</string>
+    <string name="err_port">Enter valid port number</string>
+</resources>

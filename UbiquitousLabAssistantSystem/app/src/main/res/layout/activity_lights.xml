@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/lights_area"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/toolbar_lights">
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_lights"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:background="@null"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="40dp"
+        android:scrollbars="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="160dp" />
+
+</RelativeLayout>
