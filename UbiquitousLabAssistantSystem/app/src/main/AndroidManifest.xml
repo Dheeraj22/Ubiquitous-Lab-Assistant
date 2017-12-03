@@ -21,8 +21,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".ULA_Home" />
-        <activity android:name=".LightsActivity"></activity>
-        <activity android:name=".FansActivity"></activity>
+        <activity android:name=".LightsActivity" />
+        <activity android:name=".FansActivity" />
+        <activity android:name=".CurtainsActivity" />
+        <activity android:name=".ProjectorActivity" />
+        <activity android:name=".ModesActivity" />
+        <activity android:name=".Feedback" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".PasswordActivity"></activity>
     </application>
 
 </manifest>

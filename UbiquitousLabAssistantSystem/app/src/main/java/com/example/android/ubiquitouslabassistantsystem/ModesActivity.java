@@ -25,16 +25,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FansActivity extends AppCompatActivity {
+public class ModesActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private FansAdapter adapter;
-    private List<Fans> fansList;
+    private ModesAdapter adapter;
+    private List<Modes> modeList;
     private Toolbar toolbar;
     private EditText etUrl;
     private EditText etPort;
     private TextInputLayout inputTextURL, inputTextPort;
-    public static SharedPreferences spFan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,61 +41,43 @@ public class FansActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_fans);
+        setContentView(R.layout.activity_modes);
 
         initToolbar();
 
-        recyclerView = findViewById(R.id.recycler_fans);
+        recyclerView = findViewById(R.id.recycler_modes);
 
-        fansList = new ArrayList<>();
-        adapter = new FansAdapter(this, fansList);
+        modeList = new ArrayList<>();
+        adapter = new ModesAdapter(this, modeList);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new FansActivity.GridSpacingItemDecoration(2, dpToPx(10), true));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        recyclerView.addItemDecoration(new ModesActivity.GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
-        ConfigUrl();
 
         prepareAlbums();
     }
 
     private void initToolbar(){
-        toolbar = findViewById(R.id.toolbar_fans);
+        toolbar = findViewById(R.id.toolbar_modes);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(" ");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void prepareAlbums() {
-        int cover = R.drawable.fan;
+        int[] cover = new int[]{R.drawable.movie, R.drawable.user};
 
-        String status = "OFF";
+        Modes mode1 = new Modes("Movie Mode", cover[0]);
+        modeList.add(mode1);
 
-        Fans fan1 = new Fans("Fan1", status, cover);
-        fansList.add(fan1);
-
-        Fans fan2 = new Fans("Fan2", status, cover);
-        fansList.add(fan2);
-
-        Fans fan3 = new Fans("Fan3", status, cover);
-        fansList.add(fan3);
-
-        Fans fan4 = new Fans("Fan4", status, cover);
-        fansList.add(fan4);
-
-        Fans fan5 = new Fans("Fan5", status, cover);
-        fansList.add(fan5);
-
-        Fans fan6 = new Fans("Fan6", status, cover);
-        fansList.add(fan6);
-
-        Fans fan7 = new Fans("Fan7", status, cover);
-        fansList.add(fan7);
-
-        Fans fan8 = new Fans("Fan8", status, cover);
-        fansList.add(fan8);
+        Modes mode2 = new Modes("Daylight Mode", cover[1]);
+        modeList.add(mode2);
 
         adapter.notifyDataSetChanged();
     }
@@ -144,81 +125,12 @@ public class FansActivity extends AppCompatActivity {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
-    private void ConfigUrl() {
-        LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.alert_url, null);
-        etUrl =  alertLayout.findViewById(R.id.input_url);
-        etPort =  alertLayout.findViewById(R.id.input_port);
-        inputTextURL = alertLayout.findViewById(R.id.input_layout_name);
-        inputTextPort = alertLayout.findViewById(R.id.input_layout_email);
-        spFan = PreferenceManager.getDefaultSharedPreferences(this);
-        final SharedPreferences.Editor editor = spFan.edit();
-        String url_saved = spFan.getString("url_fan", "");
-        String port_saved = spFan.getString("port_fan", "");
-
-        if (!(url_saved.toString().isEmpty() && port_saved.toString().isEmpty())) {
-            etUrl.setText(url_saved);
-            etPort.setText(port_saved);
-        }
-
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Configure");
-        alert.setView(alertLayout);
-        alert.setCancelable(false);
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        alert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String url = etUrl.getText().toString();
-                String port = etPort.getText().toString();
-                if (validateURL()) {
-                    editor.putString("url_fan", url);
-                    editor.putString("port_fan", port);
-                    editor.apply();
-                    dialog.dismiss();
-                    Toast.makeText(FansActivity.this, "Configuration Saved", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(FansActivity.this, "Do not leave blank", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        AlertDialog dialog = alert.create();
-        dialog.show();
-
-    }
-
-    private Boolean validateURL() {
-        if (etUrl.getText().toString().isEmpty()) {
-            inputTextURL.setError("Enter a URL");
-            return false;
-        } else {
-            inputTextURL.setErrorEnabled(false);
-        }
-        if (etPort.getText().toString().isEmpty()) {
-            inputTextPort.setError("Enter a port number");
-            return false;
-        } else {
-            inputTextPort.setErrorEnabled(false);
-        }
-        return true;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch(item.getItemId()){
             case android.R.id.home: onBackPressed();
         }
-
         return super.onOptionsItemSelected(item);
     }
-
-
 }

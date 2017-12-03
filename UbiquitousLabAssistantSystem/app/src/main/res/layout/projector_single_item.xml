@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/cv_fans"
+        android:id="@+id/cv_projector"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -14,44 +14,33 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rlFans"
+            android:id="@+id/rlProjector"
             android:background="@color/dark_white">
 
             <ImageView
-                android:id="@+id/ivFans"
+                android:id="@+id/ivProjector"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/fan"/>
+                android:background="@drawable/arrow_up_selected"/>
 
             <TextView
-                android:id="@+id/tvFans"
+                android:id="@+id/tvProjector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/ivFans"
-                android:layout_alignLeft="@+id/ivFans"
-                android:layout_alignRight="@+id/ivFans"
-                android:layout_alignStart="@+id/ivFans"
-                android:layout_below="@+id/ivFans"
+                android:layout_alignEnd="@+id/ivProjector"
+                android:layout_alignLeft="@+id/ivProjector"
+                android:layout_alignRight="@+id/ivProjector"
+                android:layout_alignStart="@+id/ivProjector"
+                android:layout_below="@+id/ivProjector"
                 android:layout_marginTop="8dp"
-                android:text="Fan1"
+                android:text="Up"
                 android:textAlignment="center"
                 android:textColor="@color/album_title"
+                android:layout_marginBottom="10dp"
                 android:textSize="@dimen/album_title"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvFanStatus"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tvFans"
-                android:layout_marginTop="4dp"
-                android:layout_alignStart="@id/ivFans"
-                android:text="Device is OFF"
-                android:layout_marginBottom="10dp"
-                android:textColor="@color/album_title"
-                android:textSize="@dimen/songs_count" />
 
         </RelativeLayout>
 

@@ -5,15 +5,30 @@ package com.example.android.ubiquitouslabassistantsystem;
  */
 
 public class Lights {
-    String name;
-    String deviceStatus;
-    int flatIcon;
+    private String name;
+    private String deviceStatus;
+    private int flatIcon;
+    private String[] deviceStates;
+
+//    public String[] getDeviceStates() {
+//        return deviceStates;
+//    }
+
+//    public void setDeviceStates(String[] deviceStates) {
+//        this.deviceStates = deviceStates;
+//    }
 
     public Lights(String name, String deviceStatus, int flatIcon){
         this.name = name;
         this.deviceStatus = deviceStatus;
         this.flatIcon = flatIcon;
     }
+
+//    public Lights(String name, String[] deviceStatus, int flatIcon){
+//        this.name = name;
+//        this.deviceStates = deviceStates;
+//        this.flatIcon = flatIcon;
+//    }
 
     public String getDeviceStatus() {
         return deviceStatus;

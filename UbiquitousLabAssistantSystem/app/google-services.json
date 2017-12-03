@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "1093308422320",
-    "firebase_url": "https://ubiquitous-lab-assistant.firebaseio.com",
-    "project_id": "ubiquitous-lab-assistant",
-    "storage_bucket": "ubiquitous-lab-assistant.appspot.com"
+    "project_number": "538074215316",
+    "firebase_url": "https://ubiquitous-lab-assitant-system.firebaseio.com",
+    "project_id": "ubiquitous-lab-assitant-system",
+    "storage_bucket": "ubiquitous-lab-assitant-system.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1093308422320:android:c8f380c020af612f",
+        "mobilesdk_app_id": "1:538074215316:android:c8f380c020af612f",
         "android_client_info": {
           "package_name": "com.example.android.ubiquitouslabassistantsystem"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1093308422320-8vta73s4tu3c2uo062cu409798anub4t.apps.googleusercontent.com",
+          "client_id": "538074215316-pndm2038imuq1mdqkqtq5dbdi5dvj3v1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD2WYCSGU6r8L-jEf37pQRdbA80Qp3w43c"
+          "current_key": "AIzaSyAcpF4rOrCHI5hTLSPTHg_DsjVRk2uryF8"
         }
       ],
       "services": {

@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/lights_area">
+    android:background="@drawable/curtains_bg">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:layout_height="?attr/actionBarSize"
-        android:id="@+id/toolbar_lights">
+        android:id="@+id/toolbar_curtains">
 
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_lights"
+        android:id="@+id/recycler_curtains"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"

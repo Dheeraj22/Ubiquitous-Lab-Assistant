@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
@@ -32,13 +33,13 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 /**
- * Created by Dheeraj_Kamath on 11/25/2017.
+ * Created by Dheeraj_Kamath on 11/27/2017.
  */
 
-public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> {
+public class CurtainsAdapter extends RecyclerView.Adapter<CurtainsAdapter.MyViewHolder> {
 
     private Context mContext;
-    private List<Fans> fansList;
+    private List<Curtains> curtainsList;
     Boolean state1 = true;
     Boolean state2 = true;
     Boolean state3 = true;
@@ -49,92 +50,67 @@ public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> 
     Boolean state8 = true;
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView title, fanStatus;
+        public TextView title, curtainStatus;
         public ImageView thumbnail;
         public RelativeLayout relativeLayout;
-        List<Fans> fansDetails;
+        List<Curtains> curtainsDetails;
         Context context;
 
-        public MyViewHolder(View view, Context context, List<Fans> fansList) {
+        public MyViewHolder(View view, Context context, List<Curtains> curtainsList) {
             super(view);
-            this.fansDetails = fansList;
+            this.curtainsDetails = curtainsList;
             this.context = context;
             view.setOnClickListener(this);
-            title = view.findViewById(R.id.tvFans);
-            fanStatus = view.findViewById(R.id.tvFanStatus);
-            thumbnail = view.findViewById(R.id.ivFans);
-            relativeLayout = view.findViewById(R.id.rlFans);
+            title = view.findViewById(R.id.tvCurtains);
+            curtainStatus = view.findViewById(R.id.tvCurtainStatus);
+            thumbnail = view.findViewById(R.id.ivCurtains);
+            relativeLayout = view.findViewById(R.id.rlCurtains);
         }
 
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
             String parameter = " ";
-            String ipaddress = FansActivity.spFan.getString("url_fan", "192.168.43.100");
-            String portnumber = FansActivity.spFan.getString("port_fan", "80");
+            String ipaddress = CurtainsActivity.spCurtain.getString("url_curtain", "192.168.0.100");
+            String portnumber = CurtainsActivity.spCurtain.getString("port_curtain", "80");
 
             switch(position){
                 case 0:
-                    parameter = "FAN1=";
+                    parameter = "CUR1=";
                     state1 = !state1;
                     parameter = updateState(state1, parameter);
                     break;
                 case 1:
-                    parameter = "FAN2=";
+                    parameter = "CUR2=";
                     state2 = !state2;
                     parameter = updateState(state2, parameter);
                     break;
                 case 2:
-                    parameter = "FAN3=";
+                    parameter = "CURBoth=";
                     state3 = !state3;
                     parameter = updateState(state3, parameter);
-                    break;
-                case 3:
-                    parameter = "FAN4=";
-                    state4 = !state4;
-                    parameter = updateState(state4, parameter);
-                    break;
-                case 4:
-                    parameter = "FAN5=";
-                    state5 = !state5;
-                    parameter = updateState(state5, parameter);
-                    break;
-                case 5:
-                    parameter = "FAN6=";
-                    state6 = !state6;
-                    parameter = updateState(state6, parameter);
-                    break;
-                case 6:
-                    parameter = "FAN7=";
-                    state7 = !state7;
-                    parameter = updateState(state7, parameter);
-                    break;
-                case 7:
-                    parameter = "FAN8=";
-                    state8 = !state8;
-                    parameter = updateState(state8, parameter);
                     break;
             }
 
             String[] status = parameter.split("=");
-            fanStatus.setText("Device is: " + status[1]);
+            curtainStatus.setText("Device is: " + status[1]);
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("Fans");
-            myRef.child("fan"+ String.valueOf(position+1)).setValue(status[1]);
+            DatabaseReference myRef = database.getReference("Curtains");
+            myRef.child("curtain"+ String.valueOf(position+1)).setValue(status[1]);
 
             if(status[1].equals("OFF")){
                 relativeLayout.setBackgroundColor(Color.parseColor("#EFF0F1"));
                 //thumbnail.setImageResource(R.drawable.light_off);
-                Glide.with(mContext).load(R.drawable.fan).into(thumbnail);
+                Glide.with(mContext).load(R.drawable.open_selected).into(thumbnail);
             }else{
                 relativeLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 //thumbnail.setImageResource(R.drawable.light4);
-                Glide.with(mContext).load(R.drawable.fan_on).into(thumbnail);
+                Glide.with(mContext).load(R.drawable.close).into(thumbnail);
             }
 
             if (ipaddress.length() > 0 && portnumber.length() > 0) {
-                new FansAdapter.HttpRequestAsyncTask(view.getContext(), parameter, ipaddress).execute();
+                new CurtainsAdapter.HttpRequestAsyncTask(view.getContext(), parameter, ipaddress).execute();
             }
         }
     }
@@ -150,31 +126,31 @@ public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> 
     }
 
 
-    public FansAdapter(Context mContext, List<Fans> fansList) {
+    public CurtainsAdapter(Context mContext, List<Curtains> curtainsList) {
         this.mContext = mContext;
-        this.fansList = fansList;
+        this.curtainsList = curtainsList;
     }
 
     @Override
-    public FansAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CurtainsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fans_single_item, parent, false);
+                .inflate(R.layout.curtains_single_item, parent, false);
 
-        return new FansAdapter.MyViewHolder(itemView, this.mContext, fansList);
+        return new CurtainsAdapter.MyViewHolder(itemView, this.mContext, curtainsList);
     }
 
     @Override
-    public void onBindViewHolder(final FansAdapter.MyViewHolder holder, int position) {
-        Fans fan = fansList.get(position);
-        holder.title.setText(fan.getName());
-        holder.fanStatus.setText("Device is: " + fan.getDeviceStatus());
+    public void onBindViewHolder(final CurtainsAdapter.MyViewHolder holder, int position) {
+        Curtains curtain = curtainsList.get(position);
+        holder.title.setText(curtain.getName());
+        holder.curtainStatus.setText("Device is: " + curtain.getDeviceStatus());
 
-        Glide.with(mContext).load(fan.getFlatIcon()).into(holder.thumbnail);
+        Glide.with(mContext).load(curtain.getFlatIcon()).into(holder.thumbnail);
 
     }
 
     public int getItemCount() {
-        return fansList.size();
+        return curtainsList.size();
     }
 
     public static String sendRequest(String parameterValue, String ipAddress, String portNumber) {
@@ -183,7 +159,7 @@ public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> 
         try {
 
             HttpClient httpclient = new DefaultHttpClient(); // create an HTTP client
-            // define the URL e.g. http://myIpaddress:myport/?pin=13 (to toggle pin 13 for example)
+            // define the URL e.g. http://myIpaddress:myport/status
             URI website = new URI("http://" + ipAddress + "/" + parameterValue);
             Log.d("url", "http://" + ipAddress + "/" + parameterValue);
             HttpGet getRequest = new HttpGet(); // create an HTTP GET object
@@ -202,10 +178,11 @@ public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> 
             // HTTP error
             serverResponse = e.getMessage();
             e.printStackTrace();
-        } catch (IOException e){
+        } catch (IOException e) {
+            // IO error
             serverResponse = e.getMessage();
             e.printStackTrace();
-        } catch (URISyntaxException e){
+        } catch (URISyntaxException e) {
             // URL syntax error
             serverResponse = e.getMessage();
             e.printStackTrace();
@@ -218,7 +195,6 @@ public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> 
         // declare variables needed
         private String requestReply,ipAddress, portNumber;
         private Context context;
-        private AlertDialog alertDialog;
         private String parameterValue;
 
         /**
@@ -255,6 +231,7 @@ public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> 
          */
         @Override
         protected void onPostExecute(Void aVoid) {
+            Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show();
         }
 
         /**
@@ -264,7 +241,6 @@ public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> 
          */
         @Override
         protected void onPreExecute() {
-
         }
 
     }

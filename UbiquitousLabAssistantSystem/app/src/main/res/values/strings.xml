@@ -25,4 +25,11 @@
     <string name="btn_connect">Connect</string>
     <string name="err_url">Enter valid url</string>
     <string name="err_port">Enter valid port number</string>
+
+    <string name="lights_url">192.168.0.102</string>
+    <string name="fan_url">192.168.0.105</string>
+    <string name="curtains_url">192.168.0.106</string>
+    <string name="projector_url">192.168.0.107</string>
+
+
 </resources>

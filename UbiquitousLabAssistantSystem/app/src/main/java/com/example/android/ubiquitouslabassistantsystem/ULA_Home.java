@@ -18,7 +18,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -40,7 +42,7 @@ public class ULA_Home extends AppCompatActivity {
     private ApplianceAdapter adapter;
     private List<Appliance> applianceList;
     private Toolbar toolbar;
-
+    private FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +59,7 @@ public class ULA_Home extends AppCompatActivity {
         createBurgerTab();
 
         recyclerView = findViewById(R.id.recycler_view);
+        firebaseAuth = FirebaseAuth.getInstance();
 
         applianceList = new ArrayList<>();
         adapter = new ApplianceAdapter(this, applianceList);
@@ -127,7 +130,7 @@ public class ULA_Home extends AppCompatActivity {
                 .withActivity(this)
                 .withHeaderBackground(R.color.colorPrimaryDark)
                 .addProfiles(
-                        new ProfileDrawerItem().withName(getResources().getString(R.string.app_name)).withEmail(getResources().getString(R.string.email_id)).withIcon(getResources().getDrawable(R.drawable.common_google_signin_btn_icon_light_focused))
+                        new ProfileDrawerItem().withName(getResources().getString(R.string.app_name)).withEmail(getResources().getString(R.string.email_id)).withIcon(getResources().getDrawable(R.drawable.ula_logo))
                 )
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
@@ -160,18 +163,22 @@ public class ULA_Home extends AppCompatActivity {
                                 //Stay here
                                 break;
                             }
-                            //Login
+                            //Logout
                             case 1:{
-                                //TODO Signin activity
-                                break;
+
                             }
-                            //Movies
-                            case 2:{
+                            //signout
+                            case 2:{firebaseAuth.signOut();
+                                finish();
+                                startActivity(new Intent(ULA_Home.this,MainActivity.class));
                                 break;
+
                             }
-                            //Trailer
-                            case 3: {
+                            //modes
+                            case 3: {Intent intent = new Intent(ULA_Home.this, ModesActivity.class);
+                                startActivity(intent);
                                 break;
+
                             }
                             //Theatres
                             case 4:{
@@ -192,10 +199,12 @@ public class ULA_Home extends AppCompatActivity {
                             }
                             //Feedback
                             case 8:{
+                                startActivity(new Intent(ULA_Home.this,Feedback.class));
                                 break;
                             }
                             //Settings
                             case 9:{
+                                startActivity(new Intent(ULA_Home.this,Feedback.class));
                                 break;
                             }
 
@@ -282,7 +291,7 @@ public class ULA_Home extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch(item.getItemId()){
-            case android.R.id.home: onBackPressed();
+            case android.R.id.home: break;
         }
         return super.onOptionsItemSelected(item);
     }

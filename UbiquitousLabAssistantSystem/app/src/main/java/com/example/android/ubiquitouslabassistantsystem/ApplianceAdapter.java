@@ -1,7 +1,12 @@
 package com.example.android.ubiquitouslabassistantsystem;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,24 +53,22 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
             Appliance applianceClicked = this.applianceDetails.get(position);
             String ApplianceSelected = this.applianceDetails.get(position).getName();
             Intent intent;
-            if(ApplianceSelected.equalsIgnoreCase("Lights")){
-                intent = new Intent(this.context, LightsActivity.class);
-                intent.putExtra("no_of_devices", applianceClicked.getNoOfDevices());
-                intent.putExtra("flat_icon", applianceClicked.getFlatIcon());
-            }else if(ApplianceSelected.equalsIgnoreCase("Fans")){
-                intent = new Intent(this.context, FansActivity.class);
-                intent.putExtra("no_of_devices", applianceClicked.getNoOfDevices());
-                intent.putExtra("flat_icon", applianceClicked.getFlatIcon());
-            }else if(ApplianceSelected.equalsIgnoreCase("Projector")){
-                intent = new Intent(this.context, LightsActivity.class);
-                intent.putExtra("no_of_devices", applianceClicked.getNoOfDevices());
-                intent.putExtra("flat_icon", applianceClicked.getFlatIcon());
-            }else if(ApplianceSelected.equalsIgnoreCase("Curtains")){
-                intent = new Intent(this.context, LightsActivity.class);
-                intent.putExtra("no_of_devices", applianceClicked.getNoOfDevices());
-                intent.putExtra("flat_icon", applianceClicked.getFlatIcon());
-            }else{
-                intent = new Intent(this.context, ULA_Home.class);
+
+            switch(position){
+                case 0:
+                    intent = new Intent(this.context, LightsActivity.class);
+                    break;
+                case 1:
+                    intent = new Intent(this.context, FansActivity.class);
+                    break;
+                case 2:
+                    intent = new Intent(this.context, CurtainsActivity.class);
+                    break;
+                case 3:
+                    intent = new Intent(this.context, ProjectorActivity.class);
+                    break;
+                default:
+                    intent = new Intent(this.context, ULA_Home.class);
             }
 
             this.context.startActivity(intent);
@@ -91,56 +94,9 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.MyVi
         Appliance appliance = applianceList.get(position);
         holder.title.setText(appliance.getName());
         holder.count.setText(appliance.getNoOfDevices() + " Devices");
-
         // loading album cover using Glide library
         Glide.with(mContext).load(appliance.getFlatIcon()).into(holder.thumbnail);
-
-        /*
-        holder.overflow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopupMenu(holder.overflow);
-            }
-        });
-
-        */
     }
-
-
-        /**
-         * Showing popup menu when tapping on 3 dots
-
-         private void showPopupMenu(View view) {
-         // inflate menu
-         PopupMenu popup = new PopupMenu(mContext, view);
-         MenuInflater inflater = popup.getMenuInflater();
-         inflater.inflate(R.menu.menu_album, popup.getMenu());
-         popup.setOnMenuItemClickListener(new MyMenuItemClickListener());
-         popup.show();
-         }
-
-         /**
-         * Click listener for popup menu items
-         *
-         class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
-
-         public MyMenuItemClickListener() {
-         }
-
-         @Override public boolean onMenuItemClick(MenuItem menuItem) {
-         switch (menuItem.getItemId()) {
-         case R.id.action_add_favourite:
-         Toast.makeText(mContext, "Add to favourite", Toast.LENGTH_SHORT).show();
-         return true;
-         case R.id.action_play_next:
-         Toast.makeText(mContext, "Play next", Toast.LENGTH_SHORT).show();
-         return true;
-         default:
-         }
-         return false;
-         }
-         }
-         */
 
     public int getItemCount() {
         return applianceList.size();

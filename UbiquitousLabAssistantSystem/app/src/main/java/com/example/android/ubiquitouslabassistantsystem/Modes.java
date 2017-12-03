@@ -1,26 +1,16 @@
 package com.example.android.ubiquitouslabassistantsystem;
 
 /**
- * Created by Dheeraj_Kamath on 11/25/2017.
+ * Created by Dheeraj_Kamath on 11/29/2017.
  */
 
-public class Fans {
+public class Modes {
     private String name;
-    private String deviceStatus;
     private int flatIcon;
 
-    public Fans(String name, String deviceStatus, int flatIcon){
+    public Modes(String name, int flatIcon){
         this.name = name;
-        this.deviceStatus = deviceStatus;
         this.flatIcon = flatIcon;
-    }
-
-    public String getDeviceStatus() {
-        return deviceStatus;
-    }
-
-    public void setDeviceStatus(String deviceStatus) {
-        this.deviceStatus = deviceStatus;
     }
 
     public String getName() {

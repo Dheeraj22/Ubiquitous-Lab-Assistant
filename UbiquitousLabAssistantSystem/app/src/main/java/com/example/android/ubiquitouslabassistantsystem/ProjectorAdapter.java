@@ -3,7 +3,6 @@ package com.example.android.ubiquitouslabassistantsystem;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
@@ -32,13 +32,13 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 /**
- * Created by Dheeraj_Kamath on 11/25/2017.
+ * Created by Dheeraj_Kamath on 11/29/2017.
  */
 
-public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> {
+public class ProjectorAdapter extends RecyclerView.Adapter<ProjectorAdapter.MyViewHolder> {
 
     private Context mContext;
-    private List<Fans> fansList;
+    private List<Projector> projectorList;
     Boolean state1 = true;
     Boolean state2 = true;
     Boolean state3 = true;
@@ -49,92 +49,93 @@ public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> 
     Boolean state8 = true;
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView title, fanStatus;
+        public TextView title;
         public ImageView thumbnail;
         public RelativeLayout relativeLayout;
-        List<Fans> fansDetails;
+        List<Projector> projectorList;
         Context context;
 
-        public MyViewHolder(View view, Context context, List<Fans> fansList) {
+        public MyViewHolder(View view, Context context, List<Projector> projectorList) {
             super(view);
-            this.fansDetails = fansList;
+            this.projectorList = projectorList;
             this.context = context;
             view.setOnClickListener(this);
-            title = view.findViewById(R.id.tvFans);
-            fanStatus = view.findViewById(R.id.tvFanStatus);
-            thumbnail = view.findViewById(R.id.ivFans);
-            relativeLayout = view.findViewById(R.id.rlFans);
+            title = view.findViewById(R.id.tvProjector);
+            thumbnail = view.findViewById(R.id.ivProjector);
+            relativeLayout = view.findViewById(R.id.rlProjector);
         }
 
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
             String parameter = " ";
-            String ipaddress = FansActivity.spFan.getString("url_fan", "192.168.43.100");
-            String portnumber = FansActivity.spFan.getString("port_fan", "80");
+            String ipaddress = ProjectorActivity.spProjector.getString("url_projector", "192.168.0.107");
+            String portnumber = ProjectorActivity.spProjector.getString("port_projector", "80");
 
             switch(position){
                 case 0:
-                    parameter = "FAN1=";
+                    parameter = "PRO=";
                     state1 = !state1;
                     parameter = updateState(state1, parameter);
                     break;
                 case 1:
-                    parameter = "FAN2=";
+                    parameter = "PRO=";
                     state2 = !state2;
                     parameter = updateState(state2, parameter);
                     break;
                 case 2:
-                    parameter = "FAN3=";
+                    parameter = "PRO=";
                     state3 = !state3;
-                    parameter = updateState(state3, parameter);
-                    break;
-                case 3:
-                    parameter = "FAN4=";
-                    state4 = !state4;
-                    parameter = updateState(state4, parameter);
-                    break;
-                case 4:
-                    parameter = "FAN5=";
-                    state5 = !state5;
-                    parameter = updateState(state5, parameter);
-                    break;
-                case 5:
-                    parameter = "FAN6=";
-                    state6 = !state6;
-                    parameter = updateState(state6, parameter);
-                    break;
-                case 6:
-                    parameter = "FAN7=";
-                    state7 = !state7;
-                    parameter = updateState(state7, parameter);
-                    break;
-                case 7:
-                    parameter = "FAN8=";
-                    state8 = !state8;
-                    parameter = updateState(state8, parameter);
+                    if(state3 == true){
+                        parameter = parameter + "STOP";
+                    }else{
+                        parameter = parameter + "CONT";
+                    }
                     break;
             }
 
             String[] status = parameter.split("=");
-            fanStatus.setText("Device is: " + status[1]);
+            //curtainStatus.setText("Device is: " + status[1]);
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("Fans");
-            myRef.child("fan"+ String.valueOf(position+1)).setValue(status[1]);
+            DatabaseReference myRef = database.getReference("Projectors");
+            myRef.child("projector"+ String.valueOf(position+1)).setValue(status[1]);
 
-            if(status[1].equals("OFF")){
-                relativeLayout.setBackgroundColor(Color.parseColor("#EFF0F1"));
-                //thumbnail.setImageResource(R.drawable.light_off);
-                Glide.with(mContext).load(R.drawable.fan).into(thumbnail);
+            if(position == 0){
+                if(status[1].equals("OFF")){
+                    relativeLayout.setBackgroundColor(Color.parseColor("#EFF0F1"));
+                    //thumbnail.setImageResource(R.drawable.light_off);
+                    Glide.with(mContext).load(R.drawable.arrow_up_selected).into(thumbnail);
+                }else{
+                    relativeLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    //thumbnail.setImageResource(R.drawable.light4);
+                    Glide.with(mContext).load(R.drawable.arrow_up).into(thumbnail);
+                }
+            }else if(position == 1){
+                if(status[1].equals("OFF")){
+                    relativeLayout.setBackgroundColor(Color.parseColor("#EFF0F1"));
+                    //thumbnail.setImageResource(R.drawable.light_off);
+                    Glide.with(mContext).load(R.drawable.arrow_down_selected).into(thumbnail);
+                }else{
+                    relativeLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    //thumbnail.setImageResource(R.drawable.light4);
+                    Glide.with(mContext).load(R.drawable.arrow_down).into(thumbnail);
+                }
             }else{
-                relativeLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                //thumbnail.setImageResource(R.drawable.light4);
-                Glide.with(mContext).load(R.drawable.fan_on).into(thumbnail);
+                if(status[1].equals("OFF")){
+                    relativeLayout.setBackgroundColor(Color.parseColor("#EFF0F1"));
+                    //thumbnail.setImageResource(R.drawable.light_off);
+                    Glide.with(mContext).load(R.drawable.stop1).into(thumbnail);
+                }else{
+                    relativeLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                    //thumbnail.setImageResource(R.drawable.light4);
+                    Glide.with(mContext).load(R.drawable.stop_selected).into(thumbnail);
+                }
             }
 
+
             if (ipaddress.length() > 0 && portnumber.length() > 0) {
-                new FansAdapter.HttpRequestAsyncTask(view.getContext(), parameter, ipaddress).execute();
+                new ProjectorAdapter.HttpRequestAsyncTask(view.getContext(), parameter, ipaddress).execute();
             }
         }
     }
@@ -150,31 +151,31 @@ public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> 
     }
 
 
-    public FansAdapter(Context mContext, List<Fans> fansList) {
+    public ProjectorAdapter(Context mContext, List<Projector> projectorList) {
         this.mContext = mContext;
-        this.fansList = fansList;
+        this.projectorList = projectorList;
     }
 
     @Override
-    public FansAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ProjectorAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fans_single_item, parent, false);
+                .inflate(R.layout.projector_single_item, parent, false);
 
-        return new FansAdapter.MyViewHolder(itemView, this.mContext, fansList);
+        return new ProjectorAdapter.MyViewHolder(itemView, this.mContext, projectorList);
     }
 
     @Override
-    public void onBindViewHolder(final FansAdapter.MyViewHolder holder, int position) {
-        Fans fan = fansList.get(position);
-        holder.title.setText(fan.getName());
-        holder.fanStatus.setText("Device is: " + fan.getDeviceStatus());
+    public void onBindViewHolder(final ProjectorAdapter.MyViewHolder holder, int position) {
+        Projector projector = projectorList.get(position);
+        holder.title.setText(projector.getName());
+        //holder.curtainStatus.setText("Device is: " + curtain.getDeviceStatus());
 
-        Glide.with(mContext).load(fan.getFlatIcon()).into(holder.thumbnail);
+        Glide.with(mContext).load(projector.getFlatIcon()).into(holder.thumbnail);
 
     }
 
     public int getItemCount() {
-        return fansList.size();
+        return projectorList.size();
     }
 
     public static String sendRequest(String parameterValue, String ipAddress, String portNumber) {
@@ -183,7 +184,7 @@ public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> 
         try {
 
             HttpClient httpclient = new DefaultHttpClient(); // create an HTTP client
-            // define the URL e.g. http://myIpaddress:myport/?pin=13 (to toggle pin 13 for example)
+            // define the URL e.g. http://myIpaddress:myport/status
             URI website = new URI("http://" + ipAddress + "/" + parameterValue);
             Log.d("url", "http://" + ipAddress + "/" + parameterValue);
             HttpGet getRequest = new HttpGet(); // create an HTTP GET object
@@ -202,10 +203,11 @@ public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> 
             // HTTP error
             serverResponse = e.getMessage();
             e.printStackTrace();
-        } catch (IOException e){
+        } catch (IOException e) {
+            // IO error
             serverResponse = e.getMessage();
             e.printStackTrace();
-        } catch (URISyntaxException e){
+        } catch (URISyntaxException e) {
             // URL syntax error
             serverResponse = e.getMessage();
             e.printStackTrace();
@@ -218,7 +220,6 @@ public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> 
         // declare variables needed
         private String requestReply,ipAddress, portNumber;
         private Context context;
-        private AlertDialog alertDialog;
         private String parameterValue;
 
         /**
@@ -255,6 +256,7 @@ public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> 
          */
         @Override
         protected void onPostExecute(Void aVoid) {
+            Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show();
         }
 
         /**
@@ -264,7 +266,6 @@ public class FansAdapter extends RecyclerView.Adapter<FansAdapter.MyViewHolder> 
          */
         @Override
         protected void onPreExecute() {
-
         }
 
     }

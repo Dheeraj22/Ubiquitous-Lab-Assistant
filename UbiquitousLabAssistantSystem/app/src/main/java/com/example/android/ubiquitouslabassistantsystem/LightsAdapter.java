@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -53,6 +55,8 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
     Boolean state6 = true;
     Boolean state7 = true;
     Boolean state8 = true;
+    Boolean state9 = true;
+    Boolean[] states = new Boolean[]{state1, state2, state3, state4, state5, state6, state7, state8};
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView title, lightStatus;
@@ -80,6 +84,8 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
             String portnumber = LightsActivity.sp.getString("port", null);
             Lights lightClicked = this.lightsDetails.get(position);
             String lightSelected = this.lightsDetails.get(position).getName();
+
+            //Log.d("Device Status: ", lightClicked.getDeviceStatus());
 
             switch(position){
                 case 0:
@@ -122,10 +128,19 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
                     state8 = !state8;
                     parameter = updateState(state8, parameter);
                     break;
+                case 8:
+                    parameter = "LED9=";
+                    state9 = !state9;
+                    parameter = updateState(state9, parameter);
+                    break;
             }
 
             String[] status = parameter.split("=");
             lightStatus.setText("Device is: " + status[1]);
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("Lights");
+            myRef.child("light"+ String.valueOf(position+1)).setValue(status[1]);
 
             if(status[1].equals("OFF")){
                 relativeLayout.setBackgroundColor(Color.parseColor("#EFF0F1"));
@@ -187,7 +202,7 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
         try {
 
             HttpClient httpclient = new DefaultHttpClient(); // create an HTTP client
-            // define the URL e.g. http://myIpaddress:myport/?pin=13 (to toggle pin 13 for example)
+            // define the URL e.g. http://myIpaddress:myport/status
             URI website = new URI("http://" + ipAddress + "/" + parameterValue);
             Log.d("url", "http://" + ipAddress + "/" + parameterValue);
             HttpGet getRequest = new HttpGet(); // create an HTTP GET object
@@ -260,6 +275,7 @@ public class LightsAdapter extends RecyclerView.Adapter<LightsAdapter.MyViewHold
          */
         @Override
         protected void onPostExecute(Void aVoid) {
+
         }
 
         /**

@@ -19,111 +19,140 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private Button Login;
     private EditText email;
     private EditText password;
-    private TextView signUp;
-    private Button login;
-    private TextView newPassword;
-
-    private FirebaseAuth firebaseAuth;
+    private TextView registerScreen;
+    private TextView fp;
     private ProgressDialog progressDialog;
+    private FirebaseAuth firebaseAuth;
+
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // setting default screen to login.xml
         setContentView(R.layout.activity_main);
 
-        setupUIViews();
+
+
+        email = findViewById(R.id.etEmail);
+        password = findViewById(R.id.etPassword);
+        Login = findViewById(R.id.btnLogin);
+
+        registerScreen = findViewById(R.id.tvRegister);
+        fp = findViewById(R.id.tvForgetPassword);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        signUp.setOnClickListener(this);
-        login.setOnClickListener(this);
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+        if (firebaseAuth.getCurrentUser() != null){
+            // profile activity here
+
+            finish();
+            startActivity(new Intent(getApplicationContext(), ULA_Home.class));
+        }
+
+
+
+
+
+
+
+
+        progressDialog = new ProgressDialog(this);
+
+        registerScreen.setOnClickListener(this);
+        Login.setOnClickListener(this);
+        fp.setOnClickListener(this);
+
+    }
+
+    private void userLogin(){
+        String emailid = email.getText().toString().trim();
+        String pword = password.getText().toString().trim();
+
+
+        if (TextUtils.isEmpty(emailid)){
+            // email id is blank
+            Toast.makeText(this,"Please enter your Email ID",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(pword)){
+            // password is empty
+            Toast.makeText(this, "Please enter your Password", Toast.LENGTH_SHORT).show();
+        }
+
+        // if all validations are okay, a progress bar wil be displayed
+
+        progressDialog.setMessage("You waited one year for Game of Thrones, Pls wait for sometime while we sign you in :) ");
+        progressDialog.show();
+
+        firebaseAuth.signInWithEmailAndPassword(emailid,pword)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        progressDialog.dismiss();
+                        if(task.isSuccessful()){
+                            // start the profile activity
+                            checkEmailVerification();
+
+
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "Incorrect Email ID/Password", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
 
 
     }
 
-    private void setupUIViews(){
-        email = (EditText)findViewById(R.id.etEmail);
-        password = (EditText)findViewById(R.id.etPassword);
-        signUp = (TextView)findViewById(R.id.tvRegister);
-        login = (Button)findViewById(R.id.btnLogin);
-        progressDialog = new ProgressDialog(this);
-        newPassword = findViewById(R.id.tvNewPassword);
+    private void checkEmailVerification() {
+        FirebaseUser nik = firebaseAuth.getInstance().getCurrentUser();
+        boolean ev = nik.isEmailVerified();
+        if(!ev){
+            Toast.makeText(this, "Verify your email", Toast.LENGTH_SHORT).show();
+            firebaseAuth.signOut();
+
+
+        }
+        else {
+            finish();
+            startActivity(new Intent(MainActivity.this,ULA_Home.class));
+        }
     }
 
     @Override
     public void onClick(View view) {
-        if(view == signUp){
-            signUpUser();
+        if(view == Login){
+            userLogin();
         }
 
-        if(view == login){
-            Intent intent = new Intent(MainActivity.this, ULA_Home.class);
-            startActivity(intent);
-//            if(Validate()){
-//                registerUser();
-//            }else{
-//                return;
-//            }
+        if(view == registerScreen){
+            finish();
+
+            startActivity(new Intent(this,RegisterActivity.class));
+        }
+
+        if (view == fp){
+
+            finish();
+
+            startActivity(new Intent(this,PasswordActivity.class));
         }
     }
 
-    private void signUpUser(){
-
-    }
-
-    private boolean Validate(){
-        String emailText = email.getText().toString().trim();
-        String passwordText = password.getText().toString().trim();
-        boolean valid = true;
-
-        if (emailText.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
-            email.setError("enter a valid email address");
-            valid = false;
-        } else{
-            email.setError(null);
-        }
-
-        if (passwordText.isEmpty() || passwordText.length() < 4 || passwordText.length() > 10) {
-            password.setError("between 4 and 10 alphanumeric characters");
-            valid = false;
-        } else {
-            password.setError(null);
-        }
-        return valid;
-
-    }
-
-    private void registerUser(){
-
-        String emailText = email.getText().toString().trim();
-        String passwordText = password.getText().toString().trim();
-
-        progressDialog.setMessage("Registering User");
-        progressDialog.show();
-
-        firebaseAuth.createUserWithEmailAndPassword(emailText, passwordText).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(MainActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(MainActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
-                }
-                progressDialog.dismiss();
-            }
-        });
-
-        Intent intent = new Intent(MainActivity.this, ULA_Home.class);
-        startActivity(intent);
 
 
-    }
+
 
 }

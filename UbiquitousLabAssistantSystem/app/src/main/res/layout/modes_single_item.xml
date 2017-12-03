@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/cv_fans"
+        android:id="@+id/cv_modes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -14,41 +14,36 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rlFans"
+            android:id="@+id/rlModes"
             android:background="@color/dark_white">
 
             <ImageView
-                android:id="@+id/ivFans"
+                android:id="@+id/ivModes"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/fan"/>
+                android:layout_marginTop="10dp" />
 
             <TextView
-                android:id="@+id/tvFans"
+                android:id="@+id/tvModes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/ivFans"
-                android:layout_alignLeft="@+id/ivFans"
-                android:layout_alignRight="@+id/ivFans"
-                android:layout_alignStart="@+id/ivFans"
-                android:layout_below="@+id/ivFans"
+                android:layout_alignStart="@+id/ivModes"
+                android:layout_below="@+id/ivModes"
                 android:layout_marginTop="8dp"
-                android:text="Fan1"
-                android:textAlignment="center"
+                android:text="Movie Mode"
                 android:textColor="@color/album_title"
                 android:textSize="@dimen/album_title"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvFanStatus"
+                android:id="@+id/tvModesClick"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvFans"
+                android:layout_below="@id/tvModes"
                 android:layout_marginTop="4dp"
-                android:layout_alignStart="@id/ivFans"
-                android:text="Device is OFF"
+                android:layout_alignStart="@id/ivModes"
+                android:text="Click to enable"
                 android:layout_marginBottom="10dp"
                 android:textColor="@color/album_title"
                 android:textSize="@dimen/songs_count" />
